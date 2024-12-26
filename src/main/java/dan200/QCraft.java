@@ -18,9 +18,11 @@ limitations under the License.
 package dan200;
 
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
@@ -28,6 +30,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.common.registry.GameRegistry;
 import dan200.qcraft.shared.*;
+import ganymedes01.etfuturum.api.DeepslateOreRegistry;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.multiplayer.ServerAddress;
@@ -42,6 +45,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -51,11 +55,14 @@ import java.security.PublicKey;
 import java.util.*;
 import net.minecraft.item.Item;
 
+import static dan200.QCraft.Blocks.quantumOre;
+import static dan200.QCraft.Blocks.quantumOreDeepslate;
+
 ///////////////
 // UNIVERSAL //
 ///////////////
 
-@Mod( modid = "qCraft", name = "qCraft", version = "${version}" )
+@Mod( modid = QCraft.NAME, name = QCraft.MODID, version = QCraft.VERSION )
 public class QCraft
 {
     // Static Settings
@@ -63,6 +70,9 @@ public class QCraft
     // ComputerCraft uses ID 100-102
     // CCTurtle uses ID 103
     // JuniorDev uses ID 104
+    public static final String NAME = "qCraft";
+    public static final String MODID = "qCraft";
+    public static final String VERSION = "GRADLE_MODVERSION";
     public static final int quantumComputerGUIID = 105;
 
     // Configuration options
@@ -79,11 +89,15 @@ public class QCraft
     public static int maxPortalSize = 5;
     public static int maxQTPSize = 8;
 
+    public static boolean isEFRLoaded;
+
     // Blocks and Items
     public static class Blocks
     {
         public static BlockQuantumOre quantumOre;
         public static BlockQuantumOre quantumOreGlowing;
+        public static BlockQuantumOreDeepslate quantumOreDeepslate;
+        public static BlockQuantumOreDeepslate quantumOreGlowingDeepslate;
         public static BlockQuantumLogic quantumLogic;
         public static BlockQBlock qBlock;
         public static BlockQuantumComputer quantumComputer;
@@ -134,6 +148,10 @@ public class QCraft
     @Mod.EventHandler
     public void preInit( FMLPreInitializationEvent event )
     {
+        isEFRLoaded = Loader.isModLoaded("etfuturum");
+
+        event.getModMetadata().name = EnumChatFormatting.DARK_GREEN + NAME;
+
         // Load config
 
         Configuration config = new Configuration( event.getSuggestedConfigurationFile() );
@@ -218,6 +236,13 @@ public class QCraft
     public void init( FMLInitializationEvent event )
     {
         proxy.load();
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        if(isEFRLoaded){
+            DeepslateOreRegistry.addOre(quantumOre, quantumOreDeepslate);
+        }
     }
 
     @Mod.EventHandler

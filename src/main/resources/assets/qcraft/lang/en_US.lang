@@ -1,4 +1,5 @@
 tile.qcraft:ore.name=Quantum Ore
+tile.qcraft:oreDeepslate.name=Quantum Deepslate Ore
 tile.qcraft:odb.name=Observer Dependent Block
 tile.qcraft:odb_entangled.name=Entangled Block
 tile.qcraft:qb.name=Quantum Block

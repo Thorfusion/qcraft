@@ -129,6 +129,12 @@ public abstract class QCraftProxyCommon implements IQCraftProxy
         QCraft.Blocks.quantumOreGlowing = new BlockQuantumOre( true );
         GameRegistry.registerBlock( QCraft.Blocks.quantumOreGlowing, "quantumoreglowing" );
 
+        QCraft.Blocks.quantumOreDeepslate = new BlockQuantumOreDeepslate( false );
+        GameRegistry.registerBlock( QCraft.Blocks.quantumOreDeepslate, "quantumoredeepslate" );
+
+        QCraft.Blocks.quantumOreGlowingDeepslate = new BlockQuantumOreDeepslate( true );
+        GameRegistry.registerBlock( QCraft.Blocks.quantumOreGlowingDeepslate, "quantumoreglowingdeepslate" );
+
         // Quantum logic block
         QCraft.Blocks.quantumLogic = new BlockQuantumLogic();
         GameRegistry.registerBlock( QCraft.Blocks.quantumLogic, ItemQuantumLogic.class, "quantumlogic" );

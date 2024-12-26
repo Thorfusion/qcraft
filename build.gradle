@@ -53,7 +53,7 @@ targetCompatibility = '1.8'
 
 minecraft {
     version = config.minecraft_version + "-" + config.forge_version
-    replaceIn "dan200/qcraft/QCraft.java"
+    replaceIn "dan200/QCraft.java"
     replace "GRADLE_MODVERSION", config.mod_version
 }
 
